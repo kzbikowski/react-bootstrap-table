@@ -1005,7 +1005,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var children = _props2.children;
 
 	      var enableShowOnlySelected = selectRow && selectRow.showOnlySelected;
-	      if (enableShowOnlySelected || insertRow || deleteRow || search || this.props.exportCSV) {
+	      if (enableShowOnlySelected || insertRow || deleteRow || search || this.props.exportCSV || this.props.customButtons.length > 0) {
 	        var columns = undefined;
 	        if (Array.isArray(children)) {
 	          columns = children.map(function (column, r) {
@@ -1056,7 +1056,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            onDropRow: this.handleDropRow,
 	            onSearch: this.handleSearch,
 	            onExportCSV: this.handleExportCSV,
-	            onShowOnlySelected: this.handleShowOnlySelected })
+	            onShowOnlySelected: this.handleShowOnlySelected,
+	            customButtons: this.props.customButtons })
 	        );
 	      } else {
 	        return null;
@@ -1191,7 +1192,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }),
 	  exportCSV: _react.PropTypes.bool,
 	  csvFileName: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.func]),
-	  ignoreSinglePage: _react.PropTypes.bool
+	  ignoreSinglePage: _react.PropTypes.bool,
+	  customButtons: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.shape({
+	    text: _react2['default'].PropTypes.string.isRequired,
+	    icon: _react2['default'].PropTypes.string,
+	    bsStyle: _react2['default'].PropTypes.string,
+	    handler: _react2['default'].PropTypes.func.isRequired
+	  }))
 	};
 	BootstrapTable.defaultProps = {
 	  height: '100%',
@@ -1277,7 +1284,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 	  exportCSV: false,
 	  csvFileName: 'spreadsheet.csv',
-	  ignoreSinglePage: false
+	  ignoreSinglePage: false,
+	  customButtons: []
 	};
 
 	exports['default'] = BootstrapTable;
@@ -21100,6 +21108,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* eslint no-console: 0 */
 	'use strict';
 
 	Object.defineProperty(exports, '__esModule', {
@@ -21346,6 +21355,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var deleteBtn = null;
 	      var exportCSV = null;
 	      var showSelectedOnlyBtn = null;
+	      var customButtons = null;
 
 	      if (this.props.enableInsert) {
 	        insertBtn = _react2['default'].createElement(
@@ -21397,6 +21407,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	          this.props.exportCSVText
 	        );
 	      }
+	      if (this.props.customButtons.length > 0) {
+	        customButtons = this.props.customButtons.map(function (b, i) {
+	          return _react2['default'].createElement(
+	            'button',
+	            { type: 'button',
+	              key: i,
+	              className: 'btn btn-' + (b.bsStyle ? b.bsStyle : 'primary'),
+	              onClick: b.handler },
+	            b.icon ? _react2['default'].createElement('i', { className: 'glyphicon glyphicon-' + b.icon }) : null,
+	            b.text
+	          );
+	        });
+	      }
 
 	      var searchTextInput = this.renderSearchPanel();
 	      var modal = this.props.enableInsert ? this.renderInsertRowModal() : null;
@@ -21413,6 +21436,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            exportCSV,
 	            insertBtn,
 	            deleteBtn,
+	            customButtons,
 	            showSelectedOnlyBtn
 	          )
 	        ),
@@ -21598,7 +21622,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  closeText: _react.PropTypes.string,
 	  clearSearch: _react.PropTypes.bool,
 	  ignoreEditable: _react.PropTypes.bool,
-	  defaultSearch: _react.PropTypes.string
+	  defaultSearch: _react.PropTypes.string,
+	  customButtons: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.shape({
+	    text: _react2['default'].PropTypes.string.isRequired,
+	    icon: _react2['default'].PropTypes.string,
+	    bsStyle: _react2['default'].PropTypes.string,
+	    handler: _react2['default'].PropTypes.func.isRequired
+	  }))
 	};
 
 	ToolBar.defaultProps = {
